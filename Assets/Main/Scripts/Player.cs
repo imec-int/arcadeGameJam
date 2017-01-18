@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
 		_controller.onTriggerEnterEvent += onTriggerEnterEvent;
 		_controller.onTriggerExitEvent += onTriggerExitEvent;
 		Throwable.onPlayerPickupEnter += onPlayerPickupEnter;
+		Throwable.onPlayerPickupExit += onPlayerPickupExit;
 	}
 
 	#region Event Listeners
@@ -59,6 +60,10 @@ public class Player : MonoBehaviour
 	{
 		// getting in the vicinity of a throwable
 		pickedUpObject = throwable;
+	}
+
+	void onPlayerPickupExit( int playerNumber, Throwable throwable) {
+		pickedUpObject = null;
 	}
 
 
@@ -168,6 +173,7 @@ public class Player : MonoBehaviour
 				Vector2 force = new Vector2(transform.localScale.x*throwForce.x, throwForce.y);
 				isHolding = false;
 				pickedUpObject.Throw(force);
+				pickedUpObject = null;
 			}else{
 				// if near Throwable => Pick up
 				if(pickedUpObject != null){
