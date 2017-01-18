@@ -114,6 +114,9 @@ MonoBehaviour:
   groundDamping: 20
   inAirDamping: 5
   jumpHeight: 3
+  pickedUpObject: {fileID: 0}
+  isHolding: 0
+  throwForce: {x: 10, y: 2, z: 0}
 --- !u!114 &114956714624633006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -175,8 +178,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2205be0d50e7c4e3abde5a4e1c82e484, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wrapLeft: 0
-  wrapRight: 0
+  wrapLeft: -10
+  wrapRight: 10
 --- !u!212 &212353670248883718
 SpriteRenderer:
   m_ObjectHideFlags: 1
