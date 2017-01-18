@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
 	public float jumpHeight = 3f;
 	public Throwable pickedUpObject = null;
 	public Boolean isHolding = false;
-	public Vector3 throwForce = new Vector3(10,2,0);
+	public Vector3 throwForce = new Vector3(5,12,0);
 
 	[HideInInspector]
 	private float normalizedHorizontalSpeed = 0;
@@ -124,6 +124,10 @@ public class Player : MonoBehaviour
 				_animator.Play( Animator.StringToHash( "Idle" ) );
 		}
 
+		// move pickupObject 
+		if(isHolding){
+			pickedUpObject.transform.position = new Vector3(transform.position.x+(transform.localScale.x/2),transform.position.y+1,transform.position.z); ;
+		}
 
 		// we can only jump whilst grounded
 		if( _controller.isGrounded && Input.GetButtonDown( _buttons[Button.A] ) )
@@ -161,7 +165,8 @@ public class Player : MonoBehaviour
 			if(isHolding){
 				// if holding Throwable => Throw
 				// calc force
-				Vector2 force = new Vector2(normalizedHorizontalSpeed*throwForce.x, throwForce.y);
+				Vector2 force = new Vector2(transform.localScale.x*throwForce.x, throwForce.y);
+				isHolding = false;
 				pickedUpObject.Throw(force);
 			}else{
 				// if near Throwable => Pick up
