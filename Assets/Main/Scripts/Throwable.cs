@@ -6,6 +6,7 @@ using System;
 public class Throwable : MonoBehaviour {
 
 	public static event Action<int,Throwable> onPlayerPickupEnter;
+	public static event Action<int, Throwable> onPlayerPickupExit;
 
 	public Transform player1;
 	public Transform player2;
@@ -42,6 +43,17 @@ public class Throwable : MonoBehaviour {
 
 			Player player = col.gameObject.GetComponent<Player> ();
 			onPlayerPickupEnter (player.playerNumber,this);
+
+		}
+	}
+	void OnTriggerExit2D(Collider2D col)
+	{
+		if (col.CompareTag ("Player")) {
+			//highlight
+			//todo
+
+			Player player = col.gameObject.GetComponent<Player> ();
+			onPlayerPickupExit (player.playerNumber,this);
 
 		}
 	}
