@@ -179,6 +179,9 @@ MonoBehaviour:
   groundDamping: 20
   inAirDamping: 5
   jumpHeight: 3
+  pickedUpObject: {fileID: 0}
+  isHolding: 0
+  throwForce: {x: 10, y: 2, z: 0}
 --- !u!114 &114956714624633006
 MonoBehaviour:
   m_ObjectHideFlags: 1
