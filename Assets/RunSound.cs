@@ -15,18 +15,6 @@ public class RunSound : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (player.isRunning) {
-			if (!runs) {
-				SoundK =  SoundKit.instance.playSoundLooped (run);
-				runs = true;
-			}
-		} else {
-			runs = false;
-			SoundK.fadeOutAndStop(1f);
-		}
-		if (player.jump) {
-			SoundKit.instance.playSound (jump);
 		
-		} 
 	}
 }
