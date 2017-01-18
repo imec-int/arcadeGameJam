@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4786286306723714}
   - component: {fileID: 61699202416697702}
   - component: {fileID: 50908615397797226}
+  - component: {fileID: 114456960176626514}
   m_Layer: 2
   m_Name: Pusher
   m_TagString: Player
@@ -162,6 +163,18 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114456960176626514
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1714795905167142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fd8d3f01258744b38fd064172f2be46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 114712995687718280}
 --- !u!114 &114712995687718280
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -181,7 +194,9 @@ MonoBehaviour:
   jumpHeight: 3
   pickedUpObject: {fileID: 0}
   isHolding: 0
-  throwForce: {x: 5, y: 12, z: 0}
+  isRunning: 0
+  jump: 0
+  throwForce: {x: 5, y: 0, z: 0}
 --- !u!114 &114956714624633006
 MonoBehaviour:
   m_ObjectHideFlags: 1

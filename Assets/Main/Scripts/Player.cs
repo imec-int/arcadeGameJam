@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
 	public Boolean isHolding = false;
 	public bool isRunning = false;
 	public bool jump = false;
+	public bool hitSafe = false;
 
 	public Vector3 throwForce = new Vector3(5,12,0);
 
@@ -57,6 +58,35 @@ public class Player : MonoBehaviour
 
 		// logs any collider hits if uncommented. it gets noisy so it is commented out for the demo
 		//Debug.Log( "flags: " + _controller.collisionState + ", hit.normal: " + hit.normal );
+	}
+
+	public void CollisionFromChild(Collision2D coll) {
+		if(!hitSafe)
+			StartCoroutine (PlayerHitCR ());
+	}
+
+	IEnumerator PlayerHitCR()
+	{
+		hitSafe = true;
+		this.enabled = false;
+		transform.GetChild (0).GetComponent<Collider2D> ().enabled = false;
+
+		SpriteRenderer sptr = GetComponent<SpriteRenderer> ();
+		Color origi = sptr.color;
+		for (int i = 0; i < 6; i++) {
+			sptr.color = Color.red;
+			yield return new WaitForSeconds (0.3f);
+			sptr.color = origi;
+			yield return new WaitForSeconds (0.3f);
+		}
+		sptr.color = origi;
+
+		transform.GetChild (0).GetComponent<Collider2D> ().enabled = true;
+		this.enabled = true;
+
+		yield return new WaitForSeconds (3);
+
+		hitSafe = false;
 	}
 
 	void onPlayerPickupEnter( int playerNumber,Throwable throwable)
