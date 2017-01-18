@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System;
 using System.Collections.Generic;
@@ -20,10 +20,13 @@ public class Player : MonoBehaviour
 	public float jumpHeight = 3f;
 	public Throwable pickedUpObject = null;
 	public Boolean isHolding = false;
-	public bool isRunning = false;
-	public bool jump = false;
 	public bool hitSafe = false;
-
+	//SOUND
+	private bool runs = false;
+	private SoundKit.SKSound SoundK;
+	public AudioClip jump;
+	public AudioClip run;
+	//
 	public Vector3 throwForce = new Vector3(5,12,0);
 
 	[HideInInspector]
@@ -144,10 +147,12 @@ public class Player : MonoBehaviour
 
 			if (_controller.isGrounded) {
 				_animator.Play (Animator.StringToHash ("Run"));
-				isRunning = true;
 
 			}
-			
+			if (!runs) {
+				SoundK =  SoundKit.instance.playSoundLooped (run);
+				runs = true;
+			}
 		}
 		else if( Input.GetButton( _buttons[Button.LEFT] ) )
 		{
@@ -157,8 +162,11 @@ public class Player : MonoBehaviour
 
 			if (_controller.isGrounded) {
 				_animator.Play (Animator.StringToHash ("Run"));
-				isRunning = true;
 
+			}
+			if (!runs) {
+				SoundK =  SoundKit.instance.playSoundLooped (run);
+				runs = true;
 			}
 		}
 		else
@@ -167,8 +175,10 @@ public class Player : MonoBehaviour
 
 			if( _controller.isGrounded )
 				_animator.Play( Animator.StringToHash( "Idle" ) );
-				isRunning = false;
-				jump = false;
+			if(runs){
+				runs = false;
+				SoundK.stop();
+			}
 		}
 
 		// move pickupObject 
@@ -181,7 +191,7 @@ public class Player : MonoBehaviour
 		{
 			_velocity.y = Mathf.Sqrt( 2f * jumpHeight * -gravity );
 			_animator.Play( Animator.StringToHash( "Jump" ) );
-			jump = true;
+			SoundKit.instance.playOneShot (jump);
 		}
 
 
