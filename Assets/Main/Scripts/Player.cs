@@ -20,10 +20,14 @@ public class Player : MonoBehaviour
 	public float jumpHeight = 3f;
 	public Throwable pickedUpObject = null;
 	public Boolean isHolding = false;
+<<<<<<< HEAD
 	public Vector3 throwForce = new Vector3(10,2,0);
 	public bool isRunning = false;
 	public bool jump = false;
 
+=======
+	public Vector3 throwForce = new Vector3(5,12,0);
+>>>>>>> cc5f048ab5b503154738ca107b2f210181267a65
 
 	[HideInInspector]
 	private float normalizedHorizontalSpeed = 0;
@@ -44,6 +48,7 @@ public class Player : MonoBehaviour
 		_controller.onTriggerEnterEvent += onTriggerEnterEvent;
 		_controller.onTriggerExitEvent += onTriggerExitEvent;
 		Throwable.onPlayerPickupEnter += onPlayerPickupEnter;
+		Throwable.onPlayerPickupExit += onPlayerPickupExit;
 	}
 
 	#region Event Listeners
@@ -62,6 +67,10 @@ public class Player : MonoBehaviour
 	{
 		// getting in the vicinity of a throwable
 		pickedUpObject = throwable;
+	}
+
+	void onPlayerPickupExit( int playerNumber, Throwable throwable) {
+		pickedUpObject = null;
 	}
 
 
@@ -136,6 +145,10 @@ public class Player : MonoBehaviour
 				jump = false;
 		}
 
+		// move pickupObject 
+		if(isHolding){
+			pickedUpObject.transform.position = new Vector3(transform.position.x+(transform.localScale.x/2),transform.position.y+1,transform.position.z); ;
+		}
 
 		// we can only jump whilst grounded
 		if( _controller.isGrounded && Input.GetButtonDown( _buttons[Button.A] ) )
@@ -174,8 +187,10 @@ public class Player : MonoBehaviour
 			if(isHolding){
 				// if holding Throwable => Throw
 				// calc force
-				Vector2 force = new Vector2(normalizedHorizontalSpeed*throwForce.x, throwForce.y);
+				Vector2 force = new Vector2(transform.localScale.x*throwForce.x, throwForce.y);
+				isHolding = false;
 				pickedUpObject.Throw(force);
+				pickedUpObject = null;
 			}else{
 				// if near Throwable => Pick up
 				if(pickedUpObject != null){

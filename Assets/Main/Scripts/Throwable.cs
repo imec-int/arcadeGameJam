@@ -5,18 +5,19 @@ using System;
 
 public class Throwable : MonoBehaviour {
 
-	public static event Action<int,Throwable> onPlayerPickupEnter;
-	public static event Action<int, Throwable> onPlayerPickupExit;
-
-	public Transform player1;
-	public Transform player2;
+	public static event Action<int,Throwable> onPlayerPickupEnter = delegate{};
+	public static event Action<int, Throwable> onPlayerPickupExit = delegate {};
 
 	Collider2D _triggerCollider;
 	Collider2D _throwableCollider;
 	Rigidbody2D _rb2D;
+	Color _originalColor;
+	SpriteRenderer _renderer;
 
 	// Use this for initialization
 	void Start () {
+		_renderer = GetComponent<SpriteRenderer> ();
+		_originalColor = _renderer.color;
 		Collider2D[] _collider2D = GetComponents<Collider2D> ();
 
 		if (_collider2D [0].isTrigger) {
@@ -27,6 +28,8 @@ public class Throwable : MonoBehaviour {
 			_triggerCollider = _collider2D [1];
 		}
 		_rb2D = GetComponent<Rigidbody2D> ();
+
+		Debug.Log ("test");
 	}
 	
 	// Update is called once per frame
@@ -37,11 +40,10 @@ public class Throwable : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D col)
 	{
+		Debug.Log (col.ToString());
 		if (col.CompareTag ("Player")) {
-			//highlight
-			//todo
-
-			Player player = col.gameObject.GetComponent<Player> ();
+			highlight ();
+			Player player = col.transform.parent.gameObject.GetComponent<Player> ();
 			onPlayerPickupEnter (player.playerNumber,this);
 
 		}
@@ -49,10 +51,8 @@ public class Throwable : MonoBehaviour {
 	void OnTriggerExit2D(Collider2D col)
 	{
 		if (col.CompareTag ("Player")) {
-			//highlight
-			//todo
-
-			Player player = col.gameObject.GetComponent<Player> ();
+			unhighlight ();
+			Player player = col.transform.parent.gameObject.GetComponent<Player> ();
 			onPlayerPickupExit (player.playerNumber,this);
 
 		}
@@ -60,14 +60,33 @@ public class Throwable : MonoBehaviour {
 
 	public void StartHolding()
 	{
+		unhighlight ();
 		_throwableCollider.enabled = false;
 		_triggerCollider.enabled = false;
 	}
 
 	public void Throw(Vector2 force) 
 	{
+		_rb2D.velocity = Vector3.zero;
+		_rb2D.angularVelocity = 0;
+		_throwableCollider.enabled = true;
 		_rb2D.AddForce (force, ForceMode2D.Impulse);
+		StartCoroutine (EnableCR());
 
+	}
+
+	IEnumerator EnableCR()
+	{
+		yield return new WaitForSeconds (.5f);
+		_triggerCollider.enabled = true;
+	}
+
+	private void highlight() {
+		_renderer.color = Color.white;
+	}
+
+	private void unhighlight() {
+		_renderer.color = _originalColor;
 	}
 
 	public void Drop()

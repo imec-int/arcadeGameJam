@@ -30,6 +30,16 @@ public class MainMenu : MonoBehaviour
 		}
 	}
 
+	IEnumerator BounceCR()
+	{
+		while (true)
+		{
+			yield return new WaitForSeconds(1.0f);
+			if(!_p1Ready) txtReadyP1.enabled = !txtReadyP1.enabled;
+			if(!_p2Ready) txtReadyP2.enabled = !txtReadyP2.enabled;
+		}
+	}
+
 	void Update ()
 	{
 		//back button quits the game
@@ -44,14 +54,14 @@ public class MainMenu : MonoBehaviour
 		{
 			_p1Ready = true;
 			txtReadyP1.enabled = true;
-			txtReadyP1.text = "- READY -";
+			txtReadyP1.text = "- Ready! -";
 		}
 
 		if(Input.GetButtonDown("P2_A") || Input.GetButtonDown("P2_B"))
 		{
 			_p2Ready = true;
 			txtReadyP2.enabled = true;
-			txtReadyP2.text = "- READY -";
+			txtReadyP2.text = "- Ready! -";
 		}
 
 		if(_p1Ready && _p2Ready)
@@ -67,4 +77,6 @@ public class MainMenu : MonoBehaviour
 		yield return new WaitForSecondsRealtime(0.5f);
 		SceneManager.LoadScene(nextSceneName);
 	}
+
+
 }
