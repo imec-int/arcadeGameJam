@@ -42,9 +42,7 @@ public class Throwable : MonoBehaviour {
 	{
 		Debug.Log (col.ToString());
 		if (col.CompareTag ("Player")) {
-			_renderer.color = Color.white;
-			//todo
-
+			highlight ();
 			Player player = col.transform.parent.gameObject.GetComponent<Player> ();
 			onPlayerPickupEnter (player.playerNumber,this);
 
@@ -53,9 +51,7 @@ public class Throwable : MonoBehaviour {
 	void OnTriggerExit2D(Collider2D col)
 	{
 		if (col.CompareTag ("Player")) {
-			//unhighlight
-			//todo
-			_renderer.color = _originalColor;
+			unhighlight ();
 			Player player = col.transform.parent.gameObject.GetComponent<Player> ();
 			onPlayerPickupExit (player.playerNumber,this);
 
@@ -64,6 +60,7 @@ public class Throwable : MonoBehaviour {
 
 	public void StartHolding()
 	{
+		unhighlight ();
 		_throwableCollider.enabled = false;
 		_triggerCollider.enabled = false;
 	}
@@ -72,6 +69,14 @@ public class Throwable : MonoBehaviour {
 	{
 		_rb2D.AddForce (force, ForceMode2D.Impulse);
 
+	}
+
+	private void highlight() {
+		_renderer.color = Color.white;
+	}
+
+	private void unhighlight() {
+		_renderer.color = _originalColor;
 	}
 
 	public void Drop()
