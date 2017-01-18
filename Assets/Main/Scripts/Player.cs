@@ -20,14 +20,10 @@ public class Player : MonoBehaviour
 	public float jumpHeight = 3f;
 	public Throwable pickedUpObject = null;
 	public Boolean isHolding = false;
-<<<<<<< HEAD
-	public Vector3 throwForce = new Vector3(10,2,0);
 	public bool isRunning = false;
 	public bool jump = false;
 
-=======
 	public Vector3 throwForce = new Vector3(5,12,0);
->>>>>>> cc5f048ab5b503154738ca107b2f210181267a65
 
 	[HideInInspector]
 	private float normalizedHorizontalSpeed = 0;
