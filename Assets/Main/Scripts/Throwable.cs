@@ -67,6 +67,7 @@ public class Throwable : MonoBehaviour {
 
 	public void Throw(Vector2 force) 
 	{
+		_throwableCollider.enabled = true;
 		_rb2D.AddForce (force, ForceMode2D.Impulse);
 
 	}
