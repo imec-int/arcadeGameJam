@@ -5,8 +5,8 @@ using UnityEngine;
 
 
 public class WrapAround : MonoBehaviour {
-	public float wrapLeft;
-	public float wrapRight;
+	public float wrapLeft = -10.0f;
+	public float wrapRight = 10.0f;
 	// Use this for initialization
 	void Start () {
 		

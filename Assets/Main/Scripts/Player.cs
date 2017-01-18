@@ -20,6 +20,9 @@ public class Player : MonoBehaviour
 	public float jumpHeight = 3f;
 	public Throwable pickedUpObject = null;
 	public Boolean isHolding = false;
+	public bool isRunning = false;
+	public bool jump = false;
+
 	public Vector3 throwForce = new Vector3(5,12,0);
 
 	[HideInInspector]
@@ -41,6 +44,7 @@ public class Player : MonoBehaviour
 		_controller.onTriggerEnterEvent += onTriggerEnterEvent;
 		_controller.onTriggerExitEvent += onTriggerExitEvent;
 		Throwable.onPlayerPickupEnter += onPlayerPickupEnter;
+		Throwable.onPlayerPickupExit += onPlayerPickupExit;
 	}
 
 	#region Event Listeners
@@ -59,6 +63,10 @@ public class Player : MonoBehaviour
 	{
 		// getting in the vicinity of a throwable
 		pickedUpObject = throwable;
+	}
+
+	void onPlayerPickupExit( int playerNumber, Throwable throwable) {
+		pickedUpObject = null;
 	}
 
 
@@ -104,8 +112,12 @@ public class Player : MonoBehaviour
 			if( transform.localScale.x < 0f )
 				transform.localScale = new Vector3( -transform.localScale.x, transform.localScale.y, transform.localScale.z );
 
-			if( _controller.isGrounded )
-				_animator.Play( Animator.StringToHash( "Run" ) );
+			if (_controller.isGrounded) {
+				_animator.Play (Animator.StringToHash ("Run"));
+				isRunning = true;
+
+			}
+			
 		}
 		else if( Input.GetButton( _buttons[Button.LEFT] ) )
 		{
@@ -113,8 +125,11 @@ public class Player : MonoBehaviour
 			if( transform.localScale.x > 0f )
 				transform.localScale = new Vector3( -transform.localScale.x, transform.localScale.y, transform.localScale.z );
 
-			if( _controller.isGrounded )
-				_animator.Play( Animator.StringToHash( "Run" ) );
+			if (_controller.isGrounded) {
+				_animator.Play (Animator.StringToHash ("Run"));
+				isRunning = true;
+
+			}
 		}
 		else
 		{
@@ -122,6 +137,8 @@ public class Player : MonoBehaviour
 
 			if( _controller.isGrounded )
 				_animator.Play( Animator.StringToHash( "Idle" ) );
+				isRunning = false;
+				jump = false;
 		}
 
 		// move pickupObject 
@@ -134,6 +151,7 @@ public class Player : MonoBehaviour
 		{
 			_velocity.y = Mathf.Sqrt( 2f * jumpHeight * -gravity );
 			_animator.Play( Animator.StringToHash( "Jump" ) );
+			jump = true;
 		}
 
 
@@ -168,6 +186,7 @@ public class Player : MonoBehaviour
 				Vector2 force = new Vector2(transform.localScale.x*throwForce.x, throwForce.y);
 				isHolding = false;
 				pickedUpObject.Throw(force);
+				pickedUpObject = null;
 			}else{
 				// if near Throwable => Pick up
 				if(pickedUpObject != null){
@@ -180,5 +199,13 @@ public class Player : MonoBehaviour
 					
 			}
 		}
+	}
+
+	public void Score()
+	{
+		pickedUpObject = null;
+		isHolding = false;
+
+		Debug.Log ("SCORE!");
 	}
 }

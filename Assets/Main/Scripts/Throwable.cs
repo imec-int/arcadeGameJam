@@ -67,9 +67,18 @@ public class Throwable : MonoBehaviour {
 
 	public void Throw(Vector2 force) 
 	{
+		_rb2D.velocity = Vector3.zero;
+		_rb2D.angularVelocity = 0;
 		_throwableCollider.enabled = true;
 		_rb2D.AddForce (force, ForceMode2D.Impulse);
+		StartCoroutine (EnableCR());
 
+	}
+
+	IEnumerator EnableCR()
+	{
+		yield return new WaitForSeconds (.5f);
+		_triggerCollider.enabled = true;
 	}
 
 	private void highlight() {
@@ -82,6 +91,9 @@ public class Throwable : MonoBehaviour {
 
 	public void Drop()
 	{
-		
+		_rb2D.velocity = Vector3.zero;
+		_rb2D.angularVelocity = 0;
+		_throwableCollider.enabled = true;
+		StartCoroutine (EnableCR());
 	}
 }
