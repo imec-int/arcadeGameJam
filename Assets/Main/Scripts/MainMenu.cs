@@ -30,6 +30,16 @@ public class MainMenu : MonoBehaviour
 		}
 	}
 
+	IEnumerator BounceCR()
+	{
+		while (true)
+		{
+			yield return new WaitForSeconds(1.0f);
+			if(!_p1Ready) txtReadyP1.enabled = !txtReadyP1.enabled;
+			if(!_p2Ready) txtReadyP2.enabled = !txtReadyP2.enabled;
+		}
+	}
+
 	void Update ()
 	{
 		//back button quits the game
