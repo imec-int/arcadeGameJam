@@ -91,6 +91,9 @@ public class Throwable : MonoBehaviour {
 
 	public void Drop()
 	{
-		
+		_rb2D.velocity = Vector3.zero;
+		_rb2D.angularVelocity = 0;
+		_throwableCollider.enabled = true;
+		StartCoroutine (EnableCR());
 	}
 }

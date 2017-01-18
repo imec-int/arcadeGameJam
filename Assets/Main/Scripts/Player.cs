@@ -187,4 +187,12 @@ public class Player : MonoBehaviour
 			}
 		}
 	}
+
+	public void Score()
+	{
+		pickedUpObject = null;
+		isHolding = false;
+
+		Debug.Log ("SCORE!");
+	}
 }
