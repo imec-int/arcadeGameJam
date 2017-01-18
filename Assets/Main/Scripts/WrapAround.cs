@@ -15,7 +15,10 @@ public class WrapAround : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (transform.position.x < wrapLeft) {
-			transform.position = new Vector3(wrapRight,transform.position.y,0);
+			transform.position = new Vector3 (wrapRight, transform.position.y,0);
+		}
+		if (transform.position.x > wrapRight) {
+			transform.position = new Vector3(wrapLeft,transform.position.y,0);
 		}
 	}
 }
