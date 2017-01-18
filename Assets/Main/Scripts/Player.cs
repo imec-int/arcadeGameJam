@@ -18,6 +18,9 @@ public class Player : MonoBehaviour
 	public float groundDamping = 20f; // how fast do we change direction? higher means faster
 	public float inAirDamping = 5f;
 	public float jumpHeight = 3f;
+	public Throwable pickedUpObject = null;
+	public Boolean isHolding = false;
+	public Vector3 throwForce = new Vector3(10,2,0);
 
 	[HideInInspector]
 	private float normalizedHorizontalSpeed = 0;
@@ -37,6 +40,7 @@ public class Player : MonoBehaviour
 		_controller.onControllerCollidedEvent += onControllerCollider;
 		_controller.onTriggerEnterEvent += onTriggerEnterEvent;
 		_controller.onTriggerExitEvent += onTriggerExitEvent;
+		Throwable.onPlayerPickupEnter += onPlayerPickupEnter;
 	}
 
 	#region Event Listeners
@@ -51,12 +55,21 @@ public class Player : MonoBehaviour
 		//Debug.Log( "flags: " + _controller.collisionState + ", hit.normal: " + hit.normal );
 	}
 
+	void onPlayerPickupEnter( int playerNumber,Throwable throwable)
+	{
+		// getting in the vicinity of a throwable
+		pickedUpObject = throwable;
+	}
+
 
 	void onTriggerEnterEvent( Collider2D col )
 	{
 		Debug.Log( "onTriggerEnterEvent: " + col.gameObject.name );
+		if(col.gameObject.CompareTag("Throwable")){
+			
+		}
+			
 	}
-
 
 	void onTriggerExitEvent( Collider2D col )
 	{
@@ -144,6 +157,23 @@ public class Player : MonoBehaviour
 		{
 			//TODO: b-button stuff!
 			Debug.Log(_buttons[Button.B]);
+
+			if(isHolding){
+				// if holding Throwable => Throw
+				// calc force
+				Vector2 force = new Vector2(normalizedHorizontalSpeed*throwForce.x, throwForce.y);
+				pickedUpObject.Throw(force);
+			}else{
+				// if near Throwable => Pick up
+				if(pickedUpObject != null){
+					pickedUpObject.StartHolding();
+					isHolding = true;
+				// else => Punch
+				}else{
+					// punch
+				}
+					
+			}
 		}
 	}
 }
